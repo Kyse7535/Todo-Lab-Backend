@@ -18,21 +18,14 @@ public class ToDoServiceImpl implements ToDoService {
 
     @Override
     public void creerTodo(Todo todo) {
-        Boolean isTexteNotContainSpecialCharacter = Pattern.matches("^[a-zA-Z ]+$", todo.getTexte());
-        Boolean isDateLimiteBeforeNow = LocalDate.parse(todo.getDate()).isBefore(LocalDate.now());
-        if (!isTexteNotContainSpecialCharacter) {
-            throw new RuntimeException("Le texte ne peut contenir de chiffres, ni de carectères spéciaux");
-        }
-        if (isDateLimiteBeforeNow) {
-            throw new RuntimeException("La date doit être supérieure à la date du jour");
-        }
+        isGoodFormat(todo);
         repository.save(todo);
     }
 
     @Override
-    public Todo modifierTodo(Todo todo) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'modifierTodo'");
+    public void modifierTodo(Todo todo) {
+        isGoodFormat(todo);
+        repository.modifierTodo(todo);
     }
 
     @Override
@@ -45,6 +38,17 @@ public class ToDoServiceImpl implements ToDoService {
     public List<Todo> getTodos() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getTodos'");
+    }
+
+    private void isGoodFormat(Todo todo) {
+        Boolean isTexteNotContainSpecialCharacter = Pattern.matches("^[a-zA-Z ]+$", todo.getTexte());
+        Boolean isDateLimiteBeforeNow = LocalDate.parse(todo.getDate()).isBefore(LocalDate.now());
+        if (!isTexteNotContainSpecialCharacter) {
+            throw new RuntimeException("Le texte ne peut contenir de chiffres, ni de carectères spéciaux");
+        }
+        if (isDateLimiteBeforeNow) {
+            throw new RuntimeException("La date doit être supérieure à la date du jour");
+        }
     }
 
 }

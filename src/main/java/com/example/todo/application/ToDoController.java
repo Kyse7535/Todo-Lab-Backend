@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import static org.springframework.http.ResponseEntity.*;
 
 import com.example.todo.domain.Todo;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 @RestController
 @RequestMapping("/todos")
@@ -29,6 +32,13 @@ final public class ToDoController {
     public ResponseEntity<Void> creerTodo(@RequestBody Todo todo) {
         service.creerTodo(todo);
         return status(HttpStatus.CREATED)
+                .build();
+    }
+
+    @PutMapping
+    public ResponseEntity<Void> modifierTodo(@RequestBody Todo todo) {
+        service.modifierTodo(todo);
+        return status(HttpStatus.OK)
                 .build();
     }
 
