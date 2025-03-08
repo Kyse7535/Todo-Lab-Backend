@@ -7,7 +7,7 @@ import com.example.todo.domain.Todo;
 public interface ToDoService {
     public void creerTodo(Todo todo);
 
-    public Todo modifierTodo(Todo todo);
+    public void modifierTodo(Todo todo);
 
     public void supprimerTodo(String todoId);
 
