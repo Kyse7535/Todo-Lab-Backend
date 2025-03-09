@@ -1,13 +1,11 @@
 package com.example.todo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.UUID;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import com.example.todo.application.DateGenerator;
+import com.example.todo.application.ToDoRepository;
 import com.example.todo.domain.Todo;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -25,12 +24,19 @@ public class CreerTodoTests {
 
     @Autowired
     private TestRestTemplate testRestTemplate;
+    @Autowired
+    private ToDoRepository repository;
     private Todo todo;
 
     @MockitoBean
     private DateGenerator dateGenerator;
     @LocalServerPort
     private int port;
+
+    @AfterEach
+    void setup() {
+        repository.clear();
+    }
 
     @Test
     public void creation_reussie() {
