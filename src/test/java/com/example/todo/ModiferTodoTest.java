@@ -5,7 +5,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.UUID;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import com.example.todo.application.DateGenerator;
+import com.example.todo.application.ToDoRepository;
 import com.example.todo.domain.Todo;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -29,10 +29,16 @@ public class ModiferTodoTest {
     private int port;
     @MockitoBean
     private DateGenerator dateGenerator;
+    @Autowired
+    private ToDoRepository repository;
     private Todo todo;
     private String todoId = UUID.randomUUID().toString();
     @Autowired
     private TestRestTemplate restTemplate;
+
+    void setup() {
+        repository.clear();
+    }
 
     @Test
     public void modification_reussie() {
