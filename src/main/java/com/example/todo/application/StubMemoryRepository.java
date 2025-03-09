@@ -20,8 +20,7 @@ public class StubMemoryRepository implements ToDoRepository {
 
     @Override
     public void delete(String todoId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+        registry.remove(todoId);
     }
 
     @Override

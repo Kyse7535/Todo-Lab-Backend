@@ -44,7 +44,7 @@ public class ModiferTodoTest {
     public void modification_reussie() {
         // Given
         when(dateGenerator.now()).thenReturn("2025-10-10");
-        todo = new Todo(todoId, "Dormir", "2025-10-10");
+        todo = Todo.creerTodo(UUID.randomUUID().toString(), "Dormir", "2025-10-10", UUID.randomUUID().toString());
         restTemplate.postForEntity("/todos", todo, Void.class);
         todo.setTexte("Courir");
         HttpHeaders headers = new HttpHeaders();
