@@ -35,13 +35,13 @@ public class ToDoServiceImpl implements ToDoService {
     }
 
     @Override
-    public List<Todo> getTodos() {
-        return repository.getAll();
+    public List<Todo> getTodos(String auteurId) {
+        return repository.getAll(auteurId);
     }
 
     private void isGoodFormat(Todo todo) {
         Boolean isTexteNotContainSpecialCharacter = Pattern.matches("^[a-zA-Z ]+$", todo.getTexte());
-        Boolean isDateLimiteBeforeNow = LocalDate.parse(todo.getDate()).isBefore(LocalDate.now());
+        Boolean isDateLimiteBeforeNow = LocalDate.parse(todo.getDateLimite()).isBefore(LocalDate.now());
         if (!isTexteNotContainSpecialCharacter) {
             throw new RuntimeException("Le texte ne peut contenir de chiffres, ni de carectères spéciaux");
         }

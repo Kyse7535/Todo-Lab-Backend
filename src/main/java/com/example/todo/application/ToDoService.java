@@ -11,5 +11,5 @@ public interface ToDoService {
 
     public void supprimerTodo(String todoId);
 
-    public List<Todo> getTodos();
+    public List<Todo> getTodos(String auteurId);
 }
