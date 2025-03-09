@@ -12,4 +12,6 @@ public interface ToDoRepository {
     public void delete(String todoId);
 
     public List<Todo> getAll();
+
+    public void clear();
 }

@@ -26,13 +26,18 @@ public class StubMemoryRepository implements ToDoRepository {
 
     @Override
     public List<Todo> getAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAll'");
+        return registry.values().stream().toList();
     }
 
     @Override
     public void modifierTodo(Todo todo) {
         registry.put(todo.getId(), todo);
+    }
+
+    @Override
+    public void clear() {
+        registry.clear();
+
     }
 
 }

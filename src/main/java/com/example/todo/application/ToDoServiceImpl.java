@@ -36,8 +36,7 @@ public class ToDoServiceImpl implements ToDoService {
 
     @Override
     public List<Todo> getTodos() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTodos'");
+        return repository.getAll();
     }
 
     private void isGoodFormat(Todo todo) {
