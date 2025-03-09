@@ -30,8 +30,7 @@ public class ToDoServiceImpl implements ToDoService {
 
     @Override
     public void supprimerTodo(String todoId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'supprimerTodo'");
+        repository.delete(todoId);
     }
 
     @Override
