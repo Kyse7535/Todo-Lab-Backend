@@ -11,7 +11,7 @@ public interface ToDoRepository {
 
     public void delete(String todoId);
 
-    public List<Todo> getAll();
+    public List<Todo> getAll(String auteurId);
 
     public void clear();
 }

@@ -1,55 +1,25 @@
 package com.example.todo.domain;
 
-public class Todo {
+final public class Todo {
 
     private String id;
     private String texte;
-    private String date;
+    private String dateLimite;
+    private String auteurId;
+    private Boolean isCompleted = false;
 
     public Todo() {
     }
 
-    public Todo(String id, String texte, String date) {
+    private Todo(String id, String texte, String date, String user) {
         this.id = id;
         this.texte = texte;
-        this.date = date;
+        this.dateLimite = date;
+        this.auteurId = user;
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((texte == null) ? 0 : texte.hashCode());
-        result = prime * result + ((date == null) ? 0 : date.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Todo other = (Todo) obj;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
-        if (texte == null) {
-            if (other.texte != null)
-                return false;
-        } else if (!texte.equals(other.texte))
-            return false;
-        if (date == null) {
-            if (other.date != null)
-                return false;
-        } else if (!date.equals(other.date))
-            return false;
-        return true;
+    public static Todo creerTodo(String id, String texte, String dateLimite, String user) {
+        return new Todo(id, texte, dateLimite, user);
     }
 
     public String getId() {
@@ -68,11 +38,28 @@ public class Todo {
         this.texte = texte;
     }
 
-    public String getDate() {
-        return date;
+    public String getDateLimite() {
+        return dateLimite;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setDateLimite(String dateLimite) {
+        this.dateLimite = dateLimite;
     }
+
+    public String getAuteurId() {
+        return auteurId;
+    }
+
+    public void setAuteurId(String auteurId) {
+        this.auteurId = auteurId;
+    }
+
+    public Boolean getIsCompleted() {
+        return isCompleted;
+    }
+
+    public void setIsCompleted(Boolean isCompleted) {
+        this.isCompleted = isCompleted;
+    }
+
 }

@@ -26,6 +26,7 @@ public class getTodosTest {
     @Autowired
     private TestRestTemplate template;
     private Todo todo;
+    private String auteurId = UUID.randomUUID().toString();
     @MockitoBean
     private DateGenerator dateGenerator;
 
@@ -33,10 +34,10 @@ public class getTodosTest {
     public void consultation_reussie() {
 
         when(dateGenerator.now()).thenReturn("2025-07-14");
-        todo = new Todo(UUID.randomUUID().toString(), "Dormir", "2025-10-10");
+        todo = Todo.creerTodo(UUID.randomUUID().toString(), "Dormir", "2025-07-20", auteurId);
         template.postForEntity("/todos", todo, Void.class);
 
-        ResponseEntity<List<Todo>> response = template.exchange("/todos", HttpMethod.GET, null,
+        ResponseEntity<List<Todo>> response = template.exchange("/todos/" + auteurId, HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<Todo>>() {
                 });
         Todo result = (Todo) response.getBody().get(0);

@@ -25,8 +25,8 @@ public class StubMemoryRepository implements ToDoRepository {
     }
 
     @Override
-    public List<Todo> getAll() {
-        return registry.values().stream().toList();
+    public List<Todo> getAll(String auteurId) {
+        return registry.values().stream().filter(t -> t.getAuteurId().equals(auteurId)).toList();
     }
 
     @Override

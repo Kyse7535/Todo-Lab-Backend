@@ -18,6 +18,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import com.example.todo.application.DateGenerator;
 import com.example.todo.application.ToDoRepository;
 import com.example.todo.domain.Todo;
+import com.example.todo.domain.User;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CreerTodoTests {
@@ -27,6 +28,7 @@ public class CreerTodoTests {
     @Autowired
     private ToDoRepository repository;
     private Todo todo;
+    private User user;
 
     @MockitoBean
     private DateGenerator dateGenerator;
@@ -41,7 +43,7 @@ public class CreerTodoTests {
     @Test
     public void creation_reussie() {
         when(dateGenerator.now()).thenReturn("2025-07-14");
-        todo = new Todo(UUID.randomUUID().toString(), "Dormir", "2025-07-20");
+        todo = Todo.creerTodo(UUID.randomUUID().toString(), "Dormir", "2025-07-20", UUID.randomUUID().toString());
         ResponseEntity<Void> response = testRestTemplate.postForEntity("/todos", todo, Void.class);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
@@ -50,7 +52,7 @@ public class CreerTodoTests {
     @Test
     public void format_texte_invalide() {
         when(dateGenerator.now()).thenReturn("2025-07-14");
-        todo = new Todo(UUID.randomUUID().toString(), "Dormir8", "2025-07-20");
+        todo = Todo.creerTodo(UUID.randomUUID().toString(), "Dormir8", "2025-07-20", UUID.randomUUID().toString());
         ResponseEntity<String> response = testRestTemplate.postForEntity("/todos", todo, String.class);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
@@ -60,7 +62,7 @@ public class CreerTodoTests {
     @Test
     public void date_invalide() {
         when(dateGenerator.now()).thenReturn("2025-07-14");
-        todo = new Todo(UUID.randomUUID().toString(), "Dormir", "2025-01-01");
+        todo = Todo.creerTodo(UUID.randomUUID().toString(), "Dormir", "2025-01-01", UUID.randomUUID().toString());
         ResponseEntity<String> response = testRestTemplate.postForEntity("/todos", todo, String.class);
 
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
