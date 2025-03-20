@@ -1,4 +1,4 @@
-package com.example.todo.application;
+package com.example.todo.application.todo;
 
 import java.util.List;
 
