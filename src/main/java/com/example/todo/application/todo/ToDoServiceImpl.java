@@ -1,4 +1,4 @@
-package com.example.todo.application;
+package com.example.todo.application.todo;
 
 import java.time.LocalDate;
 import java.util.List;
