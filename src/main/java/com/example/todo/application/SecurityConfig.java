@@ -82,7 +82,7 @@ public class SecurityConfig {
 
     private static PrivateKey loadPrivateKey() throws Exception {
         // Lire le contenu du fichier public.pem
-        String key = System.getenv("PRIVATE_KEY_PEM") != null ? System.getenv("PRIVATE_KEY_PEM") : new String(Files.readAllBytes(Paths.get("src/main/resources/keys/private_key.pem")));
+        String key = System.getProperty("PRIVATE_KEY_PEM") != null ? System.getProperty("PRIVATE_KEY_PEM") : new String(Files.readAllBytes(Paths.get("src/main/resources/keys/private_key.pem")));
 
         // Supprimer les en-têtes et pieds de la clé
         key = key.replace("-----BEGIN PRIVATE KEY-----", "")
