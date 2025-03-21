@@ -68,8 +68,8 @@ public class UserServiceImpl implements UserDetailsManager, UserService{
 
     @Override
     public boolean userExists(String username) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'userExists'");
+        User user = repository.findByEmail(username).orElse(null);
+        return user != null;
     }
 
     @Override
@@ -87,5 +87,18 @@ public class UserServiceImpl implements UserDetailsManager, UserService{
     }
        SignedUser signedUser = new SignedUser(user.getEmail(), tokens.get("accessToken"), tokens.get("refreshToken"));
        return signedUser;
+    }
+
+    @Override
+    public SignedUser  createUserFromGoogleAccount(String email) {
+        SignedUser signedUser = new SignedUser(email, "", "");
+        if (this.userExists(email)) {
+            signedUser.setAccountCreatedFromGoogle(false);
+            return signedUser;
+        }
+        User user = new User(email, "", List.of("ROLE_USER"));
+        repository.createUser(user);
+        signedUser.setAccountCreatedFromGoogle(true);
+        return signedUser;
     }
 }

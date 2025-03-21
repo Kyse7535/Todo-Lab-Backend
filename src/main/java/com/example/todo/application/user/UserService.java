@@ -5,4 +5,5 @@ import com.example.todo.domain.User;
 
 public interface UserService {
     public SignedUser login(User user);
+    public SignedUser createUserFromGoogleAccount(String email);
 }

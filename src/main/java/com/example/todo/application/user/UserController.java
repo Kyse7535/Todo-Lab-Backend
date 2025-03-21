@@ -3,8 +3,11 @@ package com.example.todo.application.user;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import static org.springframework.http.ResponseEntity.status;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,10 +40,17 @@ public class UserController {
         service.createUser(userDetails);
         return status(HttpStatus.CREATED).build();
     }
+    
+    @GetMapping("/home")
+    public ResponseEntity<SignedUser> home(Authentication authentication) {
+        OAuth2User user = (OAuth2User) authentication.getPrincipal();
+        String email = user.getAttribute("email");
+        return status(HttpStatus.OK).body(service.createUserFromGoogleAccount(email));
+    }
 
     @ExceptionHandler(value = Exception.class)
     public ResponseEntity<String> handler(Exception e) {
-        return status(HttpStatus.BAD_REQUEST).body(e.getMessage()) ;
+        return status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
     
 }
