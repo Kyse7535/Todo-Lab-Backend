@@ -4,6 +4,7 @@ public class SignedUser {
     private String username;
     private String accessToken;
     private String refreshToken;
+    private boolean accountCreatedFromGoogle;
 
     public SignedUser(String username, String accessToken, String refreshToken) {
         this.username = username;
@@ -33,6 +34,14 @@ public class SignedUser {
 
     public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
+    }
+
+    public boolean isAccountCreatedFromGoogle() {
+        return accountCreatedFromGoogle;
+    }
+
+    public void setAccountCreatedFromGoogle(boolean accountCreatedFromGoogle) {
+        this.accountCreatedFromGoogle = accountCreatedFromGoogle;
     }
 
 }
