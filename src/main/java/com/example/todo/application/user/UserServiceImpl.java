@@ -10,8 +10,9 @@ import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 
 import com.example.todo.application.SecurityConfig;
-import com.example.todo.domain.SignedUser;
 import com.example.todo.domain.User;
+import com.example.todo.dto.SignInReq;
+import com.example.todo.dto.SignedUser;
 
 @Service
 public class UserServiceImpl implements UserDetailsManager, UserService{
@@ -73,32 +74,29 @@ public class UserServiceImpl implements UserDetailsManager, UserService{
     }
 
     @Override
-    public SignedUser login(User user) {
-       UserDetails userDetails = this.loadUserByUsername(user.getEmail());
-       if (!passwordEncoder.matches(user.getPassword(), userDetails.getPassword())) {
+    public SignedUser login(SignInReq user) {
+       UserDetails userDetails = this.loadUserByUsername(user.email());
+       if (!passwordEncoder.matches(user.password(), userDetails.getPassword())) {
         throw new RuntimeException("Email et/ou password incorrect");
        }
        List<String> authorities = userDetails.getAuthorities().stream().map(a -> a.getAuthority()).toList();
        Map<String, String> tokens;
     try {
-        tokens = SecurityConfig.generateTokens(user.getEmail(), authorities);
+        tokens = SecurityConfig.generateTokens(user.email(), authorities);
     } catch (Exception e) {
         throw new RuntimeException("Erreur de login");
     }
-       SignedUser signedUser = new SignedUser(user.getEmail(), tokens.get("accessToken"), tokens.get("refreshToken"));
+       SignedUser signedUser = new SignedUser(user.email(), tokens.get("accessToken"), tokens.get("refreshToken"), false);
        return signedUser;
     }
 
     @Override
     public SignedUser  createUserFromGoogleAccount(String email) {
-        SignedUser signedUser = new SignedUser(email, "", "");
         if (this.userExists(email)) {
-            signedUser.setAccountCreatedFromGoogle(false);
-            return signedUser;
+            return new SignedUser(email, "", "", false);
         }
         User user = new User(email, "", List.of("ROLE_USER"));
         repository.createUser(user);
-        signedUser.setAccountCreatedFromGoogle(true);
-        return signedUser;
+        return new SignedUser(email, "", "", true);
     }
 }
