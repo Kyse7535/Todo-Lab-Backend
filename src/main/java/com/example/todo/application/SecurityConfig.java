@@ -97,8 +97,8 @@ public class SecurityConfig {
         Dotenv dotenv = Dotenv.configure().load();
         // Lire le contenu du fichier public.pem
         // String key = System.getProperty("PRIVATE_KEY_PEM") != null ? System.getProperty("PRIVATE_KEY_PEM") : new String(Files.readAllBytes(Paths.get("src/main/resources/keys/private_key.pem")));
-        String key = dotenv.get("PRIVATE_KEY_PEM");
-        key = key == null ? System.getProperty("PRIVATE_KEY_PEM"): key;
+        String key = System.getProperty("PRIVATE_KEY_PEM");
+        key = key == null ? dotenv.get("PRIVATE_KEY_PEM"): key;
 
         // Supprimer les en-têtes et pieds de la clé
         key = key.replace("-----BEGIN PRIVATE KEY-----", "")
