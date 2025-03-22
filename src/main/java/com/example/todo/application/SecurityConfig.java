@@ -1,5 +1,8 @@
 package com.example.todo.application;
 
+import static org.springframework.security.authorization.AuthorityAuthorizationManager.hasAnyRole;
+import static org.springframework.security.authorization.AuthorityAuthorizationManager.hasAuthority;
+import static org.springframework.security.authorization.AuthorizationManagers.anyOf;
 import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
 import java.nio.file.Files;
@@ -16,27 +19,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
-import static org.springframework.security.authorization.AuthorityAuthorizationManager.*;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
-import static org.springframework.security.authorization.AuthorizationManagers.*;
-
+import io.github.cdimascio.dotenv.Dotenv;
 import io.jsonwebtoken.Jwts;
 
 @EnableWebSecurity
@@ -45,9 +45,13 @@ public class SecurityConfig {
     private static final long ACCESS_TOKEN_EXPIRATION = 15 * 60 * 1000; // 15 min
     private static final long REFRESH_TOKEN_EXPIRATION = 7 * 24 * 60 * 60 * 1000; // 7 jours
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(req -> req
+        http
+        .formLogin(f -> f.disable())
+        .cors(Customizer.withDefaults())
+        .authorizeHttpRequests(req -> req
                 .requestMatchers("/h2-console/**", "/login", "/", "/oauth2/authorization/google").permitAll()
                 .requestMatchers(antMatcher(HttpMethod.POST, "/users/**")).permitAll()
                 .anyRequest().access(anyOf(hasAnyRole("USER", "ADMIN"), hasAuthority("OIDC_USER"))))
@@ -59,6 +63,10 @@ public class SecurityConfig {
                     }
                 }))
                 .oauth2Login(oauth2 -> oauth2.defaultSuccessUrl("/users/home"))
+                .sessionManagement(session -> session
+                .maximumSessions(2))
+                .logout(logout -> logout
+                .deleteCookies("JSESSIONID"))
                 .headers(headers -> headers.frameOptions().disable());
         ;
         return http.csrf(c -> c.disable()).build();
@@ -85,8 +93,11 @@ public class SecurityConfig {
     }
 
     private static PrivateKey loadPrivateKey() throws Exception {
+
+        Dotenv dotenv = Dotenv.configure().load();
         // Lire le contenu du fichier public.pem
-        String key = System.getProperty("PRIVATE_KEY_PEM") != null ? System.getProperty("PRIVATE_KEY_PEM") : new String(Files.readAllBytes(Paths.get("src/main/resources/keys/private_key.pem")));
+        // String key = System.getProperty("PRIVATE_KEY_PEM") != null ? System.getProperty("PRIVATE_KEY_PEM") : new String(Files.readAllBytes(Paths.get("src/main/resources/keys/private_key.pem")));
+        String key = dotenv.get("PRIVATE_KEY_PEM");
 
         // Supprimer les en-têtes et pieds de la clé
         key = key.replace("-----BEGIN PRIVATE KEY-----", "")

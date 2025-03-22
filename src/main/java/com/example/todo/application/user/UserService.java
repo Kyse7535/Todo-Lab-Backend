@@ -1,9 +1,9 @@
 package com.example.todo.application.user;
 
-import com.example.todo.domain.SignedUser;
-import com.example.todo.domain.User;
+import com.example.todo.dto.SignInReq;
+import com.example.todo.dto.SignedUser;
 
 public interface UserService {
-    public SignedUser login(User user);
+    public SignedUser login(SignInReq user);
     public SignedUser createUserFromGoogleAccount(String email);
 }
