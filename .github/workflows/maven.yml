@@ -13,7 +13,7 @@ jobs:
     env:
       PRIVATE_KEY_PEM: ${{ secrets.PRIVATE_KEY_PEM }}
       REDIS_URL: ${{ secrets.REDIS_URL }}
-      PORT: ${{ env.PORT }}
+      PORT: ${{ vars.PORT }}
 
     steps:
       - uses: actions/checkout@v4
