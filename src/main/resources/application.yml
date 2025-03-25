@@ -14,9 +14,15 @@ spring:
         #   github:
         #     client-id: ${GITHUB_CLIENT_ID}
         #     client-secret: ${GITHUB_CLIENT_SECRET}
-
+  data:
+    redis:
+      url: ${REDIS_URL}
 server:
   port: 4500
+  servlet:
+    session:
+      cookie:
+        http-only: true
 
 logging:
   level:

@@ -69,7 +69,7 @@ public class SecurityConfig {
                 .deleteCookies("JSESSIONID"))
                 .headers(headers -> headers.frameOptions().disable());
         ;
-        return http.csrf(c -> c.disable()).build();
+        return http.build();
     }
     @Bean
     static RoleHierarchy roleHierarchy() {
