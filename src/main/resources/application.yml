@@ -17,6 +17,10 @@ spring:
   data:
     redis:
       url: ${REDIS_URL}
+      timeout: 60000
+  cache:
+    redis:
+      time-to-live: 1800
 server:
   port: 4500
   servlet:
