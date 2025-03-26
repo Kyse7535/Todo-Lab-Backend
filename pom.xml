@@ -102,6 +102,11 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>de.ruedigermoeller</groupId>
+			<artifactId>fst</artifactId>
+			<version>3.0.3</version> <!-- Remplacez par la dernière version -->
+		</dependency>
 		
 	</dependencies>
 
@@ -126,7 +131,7 @@
                       <artifactItem>
                           <groupId>com.heroku</groupId>
                           <artifactId>webapp-runner</artifactId>
-                          <version>10.1.36.0</version>
+                          <version>9.0.69.0</version>
                           <destFileName>webapp-runner.jar</destFileName>
                       </artifactItem>
                   </artifactItems>
