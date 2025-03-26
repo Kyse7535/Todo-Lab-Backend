@@ -16,7 +16,7 @@ spring:
         #     client-secret: ${GITHUB_CLIENT_SECRET}
   data:
     redis:
-      url: ${REDISCLOUD_URL}
+      url: ${REDIS_URL}
       ssl:
         enabled: true
       timeout: 60000
