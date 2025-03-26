@@ -1,1 +1,1 @@
-web: java --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.math=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED -jar target/dependency/webapp-runner.jar --session-store redis target/todo-0.0.1-SNAPSHOT.jar --server.port=$PORT
+web: java --add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.math=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED -jar --session-store redis target/todo-0.0.1-SNAPSHOT.jar --server.port=$PORT
